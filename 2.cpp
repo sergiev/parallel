@@ -4,7 +4,7 @@
 #include <omp.h>
 #include <Eigen/Dense>
 
-void gemm_omp(double *A, double *B, double *C, int n)
+void matmul_omp(double *A, double *B, double *C, int n)
 {
 #pragma omp parallel for
     for (int i = 0; i < n; i++)
@@ -19,7 +19,7 @@ void gemm_omp(double *A, double *B, double *C, int n)
     }
 }
 
-void gemm(double *A, double *B, double *C, int n)
+void matmul(double *A, double *B, double *C, int n)
 {
     for (int i = 0; i < n; i++)
     {
@@ -69,12 +69,12 @@ int main()
         B[i] = rand()/RAND_MAX;
     }
     double dtime = omp_get_wtime();
-    gemm(A, B, C, n);
+    matmul(A, B, C, n);
     dtime = omp_get_wtime() - dtime;
     printf("Multiplication of two %i*%i matrices\n",n,n);
     printf("Consequent: %f\n", dtime);
     dtime = omp_get_wtime();
-    gemm_omp(A, B, P, n);
+    matmul_omp(A, B, P, n);
     dtime = omp_get_wtime() - dtime;
     bool e = isEqual(C,P,n);
     printf("Parallel:   %f\nSame result? %s\n", dtime, e ? "Yes" : "No");
